@@ -1,0 +1,51 @@
+@model List<Wedding>
+
+<div class="jumbotron text-center">
+    <h1>Welcome to the Wedding Planner!</h1>
+    <a href="/logout">Logout</a>
+</div>
+
+<div class="col-9">
+    <table class="table table-striped">
+        <tr>
+            <th>Wedding</th>
+            <th>Date</th>
+            <th>Number of Guests</th>
+            <th>Action</th>
+        </tr>
+        @foreach(var w in(List<Wedding>) ViewBag.Wedding)
+        {
+            <tr>
+                <td><a href="/show/@w.WeddingId">@w.WedderOne & @w.WedderTwo</a></td>            
+                <td>@w.WeddingDate</td>
+                <td>@w.WeddingAttendees.Count</td>
+                <td>@* display a cancel button if the user is the planner *@
+                    @if(w.Planner.UserId == ViewBag.User.UserId)
+                    {
+                        <a href="/delete/@w.WeddingId" class="btn btn-danger">Cancel</a>
+                    }
+                    else
+                    {
+                        @* display a unrsvp button if the user is the already rsvp'd *@
+                        if(w.WeddingAttendees.Any(a => a.Guest.UserId == ViewBag.User.UserId))
+                        {
+                            <a href="/leave/@w.WeddingId" class="btn btn-warning">Un-RSVP</a>
+                        }
+                        else
+                        {
+                            @* display a rsvp button if the user is not the planner and not yet rsvp'd*@
+                            <a href="/rsvp/@w.WeddingId" class="btn btn-primary">RSVP</a>
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+<footer>
+    <div class="text-center">
+    <a href="/newwedding" class="btn btn-info btn-lg">Create Wedding</a>
+    </div>
+</footer>
+

@@ -1,0 +1,23 @@
+@* @model List<Wedding>
+@foreach(var w in(List<Wedding>) ViewBag.Wedding)
+{
+<h1>@w.WedderOne and @w.WedderTwo's Wedding</h1>
+<h3>Date: @w.WeddingDate</h3>
+<h3>Location: @w.Address</h3>
+<h3>Guests:</h3>
+<ul>
+    <li>@w.WeddingAttendees.PlannedWeddings.FirstName</li>
+</ul>
+} *@
+@model Wedding
+
+<h1>@Model.WedderOne and @Model.WedderTwo's Wedding</h1>
+<h3>Date: @Model.WeddingDate</h3>
+<h3>Location: @Model.Address</h3>
+<h3>Guests:</h3>
+<ul>
+    @foreach( var x in Model.WeddingAttendees)
+    {
+        <li>@x.Guest.FirstName</li> 
+    }
+</ul>
